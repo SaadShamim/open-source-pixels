@@ -1,36 +1,34 @@
 module.exports = function(sequelize, DataTypes){
-	var Post = sequelize.define("Post", {
-    	title: {
+	var Comment = sequelize.define("Comment", {
+    	authorName: {
     		type: DataTypes.STRING,
     		allowNull: false,
     	},
-    	imageUrl: {
+    	description: {
     		type: DataTypes.STRING,
     		allowNull: false,
     	},
-        description: {
-            type: DataTypes.STRING,
-        },
         userId: {
+            type: DataTypes.INTEGER,
+            unique: true,
+        },
+        postId: {
             type: DataTypes.INTEGER,
             unique: true,
         }
 	}, {
         classMethods: {
             associate: function(models) {
-                Post.belongsTo(models.User, {
+                Comment.belongsTo(models.Post, {
                     onDelete: "CASCADE",
                     foreignKey: {
-                        name: 'userId',
+                        name: 'postId',
                         allowNull: false
                     }
-                });
-                Post.hasMany(models.Comment, {
-                    onDelete: "CASCADE",
                 })
             },
         }
     });
 
-	return Post;
+	return Comment;
 };
